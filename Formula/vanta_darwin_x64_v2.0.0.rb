@@ -18,7 +18,8 @@ class VantaDarwinX64V200 < Formula
 
   def install
 
-
+    system "pwd"
+    system "ls -lah"
     bin.install "vanta_darwin_x64_v2.0.0.sh"
     bin.install "vanta_compliance.pl"
 
