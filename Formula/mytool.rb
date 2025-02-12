@@ -8,17 +8,17 @@ class Mytool < Formula
   depends_on "perl"
 
   def install
-    bin.install "setup_launchd.pl"
+    bin.install "setup_cron.pl"
     bin.install "myscript.pl"
 
     # Ensure execute permissions
-    chmod 0755, bin/"setup_launchd.pl"
+    chmod 0755, bin/"setup_cron.pl"
     chmod 0755, bin/"myscript.pl"
   end
 
   def post_install
     # Run the Launchd setup script
-    system "#{bin}/setup_launchd.pl"
+    system "#{bin}/setup_cron.pl"
   end
 
   def caveats
