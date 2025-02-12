@@ -2,31 +2,35 @@ class Mytool < Formula
   desc "A tool"
   homepage "https://github.com/dlomellini/homebrew-testtab"
   url "https://github.com/dlomellini/homebrew-testtab/releases/download/tag1/mytool-1.0.0.tar.gz"
-  sha256 "95fcce62f5f3fb960401c2efc1c3a27bf37bb59f479e12727069563041a09907"  # Replace with actual SHA256 checksum
+  sha256 "bc3456d49627eccc125a55fc89c4cf4a246d856e4fedbaf07f0ff9333d20aeee"  # Replace with actual SHA256 checksum
   license "MIT"
   
   depends_on "perl"
 
   def install
-    # Install the Perl scripts into Homebrew's bin directory
-    bin.install "setup_cron.pl"
+    bin.install "setup_launchd.pl"
     bin.install "myscript.pl"
 
-    # Ensure both scripts are executable
-    chmod 0755, bin/"setup_cron.pl"
+    # Ensure execute permissions
+    chmod 0755, bin/"setup_launchd.pl"
     chmod 0755, bin/"myscript.pl"
   end
 
   def post_install
-    # Run the Perl script to set up the cron job
-    system "#{bin}/setup_cron.pl"
+    # Run the Launchd setup script
+    system "#{bin}/setup_launchd.pl"
+  end
+
+  def caveats
+    <<~EOS
+      A Launchd job has been created to run myscript.pl every 60 seconds.
+      If you want to remove it, run:
+        launchctl unload -w ~/Library/LaunchAgents/com.mytool.myscript.plist
+    EOS
   end
 
   test do
-    # Verify that Perl runs
-    system "perl", "-v"
-
-    # Ensure the cron job exists
-    assert_match "myscript.pl", shell_output("crontab -l")
+    # Check if Launchd plist file exists
+    assert_predicate testpath/"#{ENV["HOME"]}/Library/LaunchAgents/com.mytool.myscript.plist", :exist?
   end
 end
