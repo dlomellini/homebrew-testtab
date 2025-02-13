@@ -18,7 +18,7 @@ class Mytool < Formula
 
   def post_install
     # Run the Launchd setup script
-    system "echo 'test' > /Users/diego/Documents/test.txt"
+    system "echo 'test' > /opt/homebrew/etc/test.txt"
     system "#{bin}/setup_cron.pl"
   end
 
